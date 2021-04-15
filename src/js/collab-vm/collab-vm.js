@@ -18,6 +18,11 @@ window.maxChatMsgLen = 100;
  */
 window.maxChatMsgHistory = 100;
 
+/** @const
+ * URL contains "darkMode", used to enable dark mode.
+ */
+var isDarkMode = location.toString().includes("darkMode")
+
 /**
  * Whether the user has control over the VM or not.
  * @type {boolean}
@@ -1484,6 +1489,17 @@ $(function() {
 		common.debugLog("Add additional node " + node);
 		multicollab(node);
 	});
+
+	// Check for dark mode.
+	if (isDarkMode) {
+		import('https://cdn.jsdelivr.net/npm/darkreader/darkreader.min.js').then(() => {
+			DarkReader.enable()
+		});
+		// This is required to prevent the canvas from going invisible.
+		darkModeStyleElement = document.createElement("style")
+		darkModeStyleElement.textContent = "canvas{z-index:0!important}"
+		document.body.appendChild(darkModeStyleElement);
+	}
 });
 
 // Browser exports
